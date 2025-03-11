@@ -91,8 +91,10 @@ void DeviceForm::onSearchButtonClicked()
 void DeviceForm::onDeviceDiscovered(const QBluetoothDeviceInfo &info)
 {
     QString address = info.address().toString();
+    QString uuid = info.deviceUuid().toString(QUuid::StringFormat::WithoutBraces);
     QString name = info.name();
-    if(m_shownDevices.contains(address, Qt::CaseInsensitive))
+    
+    if(m_shownDevices.contains(info))
     {
         qDebug() << "dumplicate:" << address << name;
         return;
@@ -112,7 +114,7 @@ void DeviceForm::onDeviceDiscovered(const QBluetoothDeviceInfo &info)
         typeItem->setText(tr("RFCOMM"));
     typeItem->setData(Qt::UserRole, m_isCurrDiscoveryMethodBLE);
     deviceTable->setItem(i, 2, typeItem);
-    m_shownDevices.append(address);
+    m_shownDevices.append(info);
 
     qDebug() << name
              << address
@@ -166,16 +168,19 @@ void DeviceForm::showEvent(QShowEvent *event)
 
 void DeviceForm::on_connectButton_clicked()
 {
-    QString addressStr = ui->deviceAddressEdit->text();
-    if(QBluetoothAddress(addressStr).isNull())
-    {
-        emit showMessage(tr("Not a valid Bluetooth address"));
-        return;
-    }
+    auto selectedItem = ui->deviceTableWidget->selectionModel()->selectedRows().first().row();
+    auto selectedDevice = m_shownDevices[selectedItem];
+    qDebug() << selectedItem;
+
+    // if(selectedItem == nullptr)
+    // {
+    //     emit showMessage(tr("Not a valid Bluetooth address"));
+    //     return;
+    // }
     bool isBLE = ui->deviceTypeBox->currentData().toBool();
-    emit connectTo(addressStr, isBLE);
+    emit connectTo(selectedDevice, isBLE); //TODO: make this work, get by index from bluetooth device list and pass QBluetoothDeviceInfo
     m_settings->beginGroup("DeviceForm");
-    m_settings->setValue("LastDeviceAddress", addressStr);
+    m_settings->setValue("LastDeviceAddress", selectedDevice.deviceUuid());
     m_settings->setValue("LastDeviceType", ui->deviceTypeBox->currentText());
     m_settings->endGroup();
 }
