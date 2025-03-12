@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v4
@@ -15,10 +15,17 @@ jobs:
         uses: jurplel/install-qt-action@v4.1.1
         with:
           version: 5.15.2
-      - name: change dir 
-        run: cd Qt
       - name: qmake
         run: qmake
-      - name: make
-        run: make
+        working-directory: Qt
+      - name: nmake
+        run: nmake
+        working-directory: Qt
+      - name: Upload exe
+        uses: actions/upload-artifact@v4.6.1
+        with:
+          name: medifier-msvc-exe
+          path: mEDIFIER
+
+        
         
