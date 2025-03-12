@@ -19,6 +19,8 @@ jobs:
         run: cd Qt
       - name: qmake
         run: qmake
+        working-directory: repo/Qt
       - name: make
         run: make
+        working-directory: repo/Qt
         
