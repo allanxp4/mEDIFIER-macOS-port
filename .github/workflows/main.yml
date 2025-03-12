@@ -27,7 +27,7 @@ jobs:
         uses: actions/upload-artifact@v4.6.1
         with:
           name: medifier-msvc-exe
-          path: mEDIFIER
+          path: release/mEDIFIER.exe
 
         
         
