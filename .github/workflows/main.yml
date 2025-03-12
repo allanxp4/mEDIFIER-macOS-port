@@ -3,6 +3,7 @@ name: Build Qt
 on:
   push:
     branches:
+      - main
       - release/*
 
 jobs:
