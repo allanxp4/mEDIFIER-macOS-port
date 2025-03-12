@@ -182,7 +182,7 @@ void DeviceForm::on_connectButton_clicked()
     qDebug() << selectedItem;
 
     bool isBLE = ui->deviceTypeBox->currentData().toBool();
-    emit connectTo(selectedDevice, isBLE); //TODO: make this work, get by index from bluetooth device list and pass QBluetoothDeviceInfo
+    emit connectTo(selectedDevice, isBLE);
     m_settings->beginGroup("DeviceForm");
     m_settings->setValue("LastDeviceAddress", selectedDevice.deviceUuid());
     m_settings->setValue("LastDeviceType", ui->deviceTypeBox->currentText());
