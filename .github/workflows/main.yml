@@ -16,12 +16,10 @@ jobs:
         uses: jurplel/install-qt-action@v4.1.1
         with:
           version: 5.15.2
-      - name: change dir 
-        run: cd Qt
       - name: qmake
         run: qmake
-        working-directory: repo/Qt
+        working-directory: Qt
       - name: make
         run: make
-        working-directory: repo/Qt
+        working-directory: Qt
         
